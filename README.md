@@ -17,3 +17,59 @@ Northwind veriseti, bir dizi tablodan oluşur ve bir ticaret işletmesinin satı
 - Customers: Müşteri bilgileri
 - Orders: Sipariş bilgileri
 
+**Kohort Analizi için kullanılan DAX formülleri:**
+- Müşterilerin ilk sipariş tarihlerini orders tablosuna kolon olarak ekleme:
+  
+      Earliest of Month (EOM) = 
+      //Sırasıyla her bir satırdaki customer_id'yi customer değişkenine atar.
+      VAR customer = 'orders'[customer_id]
+      RETURN
+      //Her bir satırdaki customer_id için ilk sipariş tarihini getirir.
+      CALCULATE(
+        EOMONTH(MIN('orders'[order_date]),0),
+        FILTER(
+            'orders',
+            'orders'[customer_id] = customer
+        )
+      )
+
+
+- Kohort Tablosu Oluşturma:
+  
+      //Kohort tablosuna 0'dan 22'ye kadar 1'er artacak şekilde values ekler.
+      Kohort = GENERATESERIES(0,22,1)
+
+
+- Müşteri Elde Tutma Oranını Count olarak hesaplama (Retention Rate/Count):
+
+      Customer Retention = 
+      VAR CurrentMonthAfter = SELECTEDVALUE('Kohort'[Value])
+      VAR CurrentFirstOrderMonth = SELECTEDVALUE(orders[Earliest of Month (EOM)])
+      RETURN 
+      CALCULATE(
+      DISTINCTCOUNT(
+        orders[customer_id]),
+        FILTER(
+            'orders',
+            EOMONTH(orders[order_date],0) = EOMONTH(CurrentFirstOrderMonth, CurrentMonthAfter)
+        )
+      )
+
+
+- Müşteri Elde Tutma Oranını yüzde olarak hesaplama (Retention Rate/%):
+
+      Customer Retention % = 
+      VAR KohortMonth = SELECTEDVALUE('Kohort'[Value])
+      VAR CurrentFirstOrderMonth = SELECTEDVALUE(orders[Earliest of Month (EOM)])
+      RETURN 
+      DIVIDE(
+        CALCULATE(
+        DISTINCTCOUNT(
+          orders[customer_id]),
+          FILTER(
+            'orders',
+            EOMONTH(orders[order_date],0) = EOMONTH(CurrentFirstOrderMonth, KohortMonth)
+          )
+        ),
+      DISTINCTCOUNT(orders[customer_id]))
+
