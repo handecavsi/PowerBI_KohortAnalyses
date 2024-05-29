@@ -1,6 +1,7 @@
 ## Kohort Analizi - Northwind Dataset
 
 **Proje Tanımı**
+
 Bu proje,  Northwind verisetini kullanarak Kohort Analizi gerçekleştirmektedir. Kohort Analizi, belirli bir süre boyunca belirli bir kullanıcı grubu (kohort) tarafından yapılan aktiviteleri analiz ederek kullanıcı davranışlarını ve trendleri anlamaya yardımcı olan bir tekniktir. Bu proje, kullanıcıların (müşterilerin) zaman içindeki davranışlarını ve müşteri tutma oranlarını (retention rate) hesaplamaktadır.
 
 ## Kohort Analizi Nedir?
