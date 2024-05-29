@@ -40,7 +40,7 @@ Northwind veriseti, bir dizi tablodan oluşur ve bir ticaret işletmesinin satı
       Kohort = GENERATESERIES(0,22,1)
 
 
-- Müşteri Elde Tutma Oranını Count olarak hesaplama (Retention Rate/Count):
+- Kohort Tablosuna measure ekleme: Müşteri Elde Tutma Oranını Count olarak hesaplama (Retention Rate/Count).
 
       Customer Retention = 
       VAR CurrentMonthAfter = SELECTEDVALUE('Kohort'[Value])
